@@ -43,7 +43,7 @@ const SettingsPage = (props, context) => {
         {levels}
       </div>
       <div>
-        <Link className='Settings-cancel btn btn-default btn-sm' to='/'>Cancel</Link>
+        <Link className='cancel-btn btn btn-default btn-sm' to='/'>Cancel</Link>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import './GamePage.css';
+import NavBar from '../../components/NavBar/NavBar';
 import GameBoard from '../../components/GameBoard/GameBoard';
 import ColorPicker from '../../components/ColorPicker/ColorPicker';
 import NewGameButton from '../../components/NewGameButton/NewGameButton';
@@ -14,6 +15,7 @@ const GamePage = (props) => {
 
   return (
     <div className="GamePage">
+      <NavBar />
       <div className="GamePage-game">
         <GameBoard
           guesses={props.guesses}
@@ -27,7 +29,12 @@ const GamePage = (props) => {
             colors={props.colors}
             selColorIdx={props.selColorIdx}
           />
-          <GameTimer elapsedTime={props.elapsedTime} handleTick={props.handleTick} />
+          <GameTimer
+            elapsedTime={props.elapsedTime}
+            interval={1000}
+            handleTick={props.handleTick}
+            isTiming={props.isTiming}
+          />
           <Link className='btn btn-default' style={{margin: '0 10px'}} to='/settings'>Difficulty</Link>
           <NewGameButton handleNewGameClick={props.handleNewGameClick}/>
         </div>

@@ -2,7 +2,7 @@ import React from 'react';
 
 const NewGameButton = (props) => {
   return (
-    <button
+    <button 
       className="btn btn-default"
       style={{margin: 10}}
       onClick={props.handleNewGameClick}

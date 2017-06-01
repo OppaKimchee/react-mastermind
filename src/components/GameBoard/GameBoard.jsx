@@ -5,7 +5,7 @@ import './GameBoard.css';
 const GameBoard = (props) => {
   return (
     <div className="GameBoard">
-      {props.guesses.map((guess, idx) =>
+      {props.guesses.map((guess, idx) => 
         <GuessRow
           guess={guess}
           colors={props.colors}

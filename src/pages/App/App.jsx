@@ -7,6 +7,9 @@ import {
 import './App.css';
 import GamePage from '../GamePage/GamePage';
 import SettingsPage from '../SettingsPage/SettingsPage';
+import SignupPage from '../SignupPage/SignupPage';
+import LoginPage from '../LoginPage/LoginPage';
+import TopScoresPage from '../TopScoresPage/TopScoresPage';
 
 let colorTable = [
   {name: 'Easy', colors: ['#7CCCE5', '#FDE47F', '#E04644', '#B576AD']},
@@ -24,12 +27,15 @@ class App extends Component {
     );
   }
 
+  /*---------- Helper Methods ----------*/
+
   getInitialState() {
     return {
       code: this.genCode(colorTable[0].colors.length),
       selColorIdx: 0,
       guesses: [this.getNewGuess()],
-      elapsedTime: 0
+      elapsedTime: 0,
+      finalTime: 0
     };
   }
 
@@ -54,7 +60,7 @@ class App extends Component {
     });
   }
 
-    /*---------- Callback Methods ----------*/
+  /*---------- Callback Methods ----------*/
 
   handleColorSelection = (colorIdx) => {
     this.setState({selColorIdx: colorIdx});
@@ -123,47 +129,61 @@ class App extends Component {
     if (perfect !== 4) guessesCopy.push(this.getNewGuess());
 
     // Finally, update the state with the NEW guesses array
-    this.setState({
-      guesses: guessesCopy
-    });
+    this.setState(prevState => ({
+      guesses: guessesCopy,
+      finalTime: (perfect === 4) ? prevState.elapsedTime : 0
+    }));
   }
 
-handleTick = () => {
-	this.setState((prevState) => ({
-		elapsedTime: ++prevState.elapsedTime
-	}));
-}
+  handleTick = () => {
+    this.setState((prevState) => ({
+      elapsedTime: ++prevState.elapsedTime
+    }));
+  }
 
-/*------ Lifecycle Methods ------*/
+  /*---------- Lifecycle Methods ----------*/
 
   render() {
     return (
       <div>
         <header className='header-footer'>R E A C T &nbsp;&nbsp; M A S T E R M I N D</header>
         <Router>
-            <Switch>
-              <Route exact path='/' render={() =>
-                <GamePage
-                  colors={this.state.colors}
-                  selColorIdx={this.state.selColorIdx}
-                  guesses={this.state.guesses}
-                  handleColorSelection={this.handleColorSelection}
-                  handleNewGameClick={this.handleNewGameClick}
-                  handlePegClick={this.handlePegClick}
-                  handleScoreClick={this.handleScoreClick}
-                  elapsedTime={this.state.elapsedTime}
-                  handleTick={this.handleTick}
-                />}
+          <Switch>
+            <Route exact path='/' render={() =>
+              <GamePage
+                colors={this.state.colors}
+                selColorIdx={this.state.selColorIdx}
+                guesses={this.state.guesses}
+                handleColorSelection={this.handleColorSelection}
+                handleNewGameClick={this.handleNewGameClick}
+                handlePegClick={this.handlePegClick}
+                handleScoreClick={this.handleScoreClick}
+                elapsedTime={this.state.elapsedTime}
+                interval={1000}
+                handleTick={this.handleTick}
+                isTiming={!this.state.finalTime}
               />
-              <Route exact path='/settings' render={() =>
-                <SettingsPage
-                  colorTable={colorTable}
-                  difficultyLevel={this.state.difficultyLevel}
-                  handleDifficultyChange={this.setDifficulty}
-                  handleNewGame={this.handleNewGameClick}
-                />
-              }/>
-            </Switch>
+            }/>
+            <Route exact path='/settings' render={() => 
+              <SettingsPage
+                colorTable={colorTable}
+                difficultyLevel={this.state.difficultyLevel}
+                handleDifficultyChange={this.setDifficulty}
+                handleNewGame={this.handleNewGameClick}
+              />
+            }/>
+            <Route exact path='/signup' render={(props) => 
+              <SignupPage {...props}
+                
+              />
+            }/>
+            <Route exact path='/login' render={() => 
+              <LoginPage
+                
+              />
+            }/>
+            <Route exact path='/topscores' component={TopScoresPage} />
+          </Switch>
         </Router>
       </div>
     );
